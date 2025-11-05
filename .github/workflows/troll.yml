@@ -13,7 +13,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          persist-credentials: false # token bilan push qilamiz
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0 # Butun tarixni olish
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -23,14 +24,14 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run script
-        run: node index.js
-
-      - name: Configure Git for push
+      - name: Configure Git
         run: |
           git config user.name "Developer-Mustafo"
           git config user.email "mustaforahimov30@gmail.com"
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/Developer-Mustafo/bruh.git
+
+      - name: Run script
+        run: node index.js
 
       - name: Push changes
-        run: git push origin main
+        run: |
+          git push origin main
