@@ -1,7 +1,10 @@
-name: One-Time Job
+name: Daily Commit
+
+# Har kuni ishga tushadi
 on:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '0 0 * * *' # UTC 00:00
+  workflow_dispatch: # Qo'lda ishga tushirish opsiyasi ham mavjud
 
 jobs:
   run-job:
@@ -9,8 +12,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          persist-credentials: false # token bilan push qilamiz
 
-      - name: Run Node.js script
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
@@ -18,11 +23,14 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run your script
+      - name: Run script
         run: node index.js
+
       - name: Configure Git for push
         run: |
           git config user.name "Developer-Mustafo"
           git config user.email "mustaforahimov30@gmail.com"
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/Developer-Mustafo/bruh.git
+
       - name: Push changes
         run: git push origin main
