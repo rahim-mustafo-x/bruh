@@ -3,7 +3,7 @@ import moment from "moment";
 import simpleGit from "simple-git";
 import random from "random";
 
-const git = simpleGit(); // bir marta yaratamiz
+const git = simpleGit();
 const path = "./data.json";
 
 // Git foydalanuvchini sozlash
@@ -12,8 +12,17 @@ await git.addConfig("user.email", "mustaforahimov30@gmail.com");
 
 const makeCommits = async (n) => {
   if (n === 0) {
-    await git.push();
-    console.log("✅ All commits pushed!");
+    try {
+      // Push with authentication handling
+      await git.push();
+      console.log("✅ All commits pushed!");
+    } catch (error) {
+      console.log("⚠️  Push failed, but commits are created locally");
+      console.log("💡 To push to GitHub, use one of these methods:");
+      console.log("   1. Run with GitHub Actions and GITHUB_TOKEN");
+      console.log("   2. Use SSH key authentication");
+      console.log("   3. Use personal access token");
+    }
     return;
   }
 
@@ -35,6 +44,5 @@ const makeCommits = async (n) => {
     makeCommits(--n);
   });
 };
-
 
 makeCommits(500);
