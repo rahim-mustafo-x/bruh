@@ -20,7 +20,7 @@ const makeCommits = async (n) => {
   const x = random.int(0, 54);
   const y = random.int(0, 6);
   const date = moment()
-    .subtract(1, "y")
+    .subtract(2, "y")
     .add(1, "d")
     .add(x, "w")
     .add(y, "d")
@@ -36,4 +36,4 @@ const makeCommits = async (n) => {
   });
 };
 
-makeCommits(100);
+makeCommits(500);
