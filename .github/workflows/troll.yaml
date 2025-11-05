@@ -20,3 +20,9 @@ jobs:
 
       - name: Run your script
         run: node index.js
+      - name: Configure Git for push
+        run: |
+          git config user.name "Developer-Mustafo"
+          git config user.email "mustaforahimov30@gmail.com"
+      - name: Push changes
+        run: git push origin main
