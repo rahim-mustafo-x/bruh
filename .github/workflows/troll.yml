@@ -14,23 +14,24 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }} # bu endi write huquqli bo‘ladi
+          token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '18'
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm install
 
       - name: Configure Git
         run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Run script
         run: node index.js
@@ -38,5 +39,5 @@ jobs:
       - name: Commit & Push changes
         run: |
           git add .
-          git commit -m "Daily auto commit $(date)" || echo "No changes to commit"
+          git diff --staged --quiet && echo "No changes to commit" && exit 0 || git commit -m "Daily auto commit $(date +'%Y-%m-%d %H:%M:%S')"
           git push origin main
